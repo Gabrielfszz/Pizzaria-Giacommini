@@ -31,6 +31,34 @@ type vendas = {
 };
 
 let i = 1;
+
+async function inicializaIdProdutos() {
+    try {
+        const data = await fs.readFile(ARQ.produtos, 'utf-8');
+        const linhas = data.trim().split('\n').slice(1); // Ignora cabeçalho
+        const ids = linhas.map(linha => parseInt(linha.split(',')[0])).filter(Number.isFinite);
+        if (ids.length > 0) {
+            i = Math.max(...ids) + 1;
+        }
+    } catch {
+        i = 1;
+    }
+}
+
+async function inicializaIdClientes() {
+    try {
+        const data = await fs.readFile(ARQ.clientes, 'utf-8');
+        const linhas = data.trim().split('\n').slice(1); // Ignora cabeçalho
+        const ids = linhas.map(linha => parseInt(linha.split(',')[0])).filter(Number.isFinite);
+        if (ids.length > 0) {
+            i = Math.max(...ids) + 1;
+        }
+    } catch {
+        i = 1;
+    }
+}
+
+
 const rl = readline.createInterface({ input, output });
 
 const ROOT = path.resolve('.');
@@ -67,7 +95,8 @@ async function criaSeNaoExiste(caminho: string, conteudo: string): Promise<void>
 }
 
 
-function cadastrarCliente() {
+async function cadastrarCliente() {
+    await inicializaIdClientes();
     rl.question('Digite o nome do cliente: ', (nome) => {
         rl.question('Digite o telefone do cliente: ', (telefone) => {
             rl.question('Digite o endereço do cliente: ', (endereco) => {
@@ -75,30 +104,31 @@ function cadastrarCliente() {
                 fs.appendFile(ARQ.clientes, `${novoCliente.id},${novoCliente.nome},${novoCliente.telefone},${novoCliente.endereco}\n`, 'utf8')
                     .then(() => {
                         console.log('Cliente cadastrado com sucesso!');
-                        rl.close();
+                        voltarMenu();
                     })
                     .catch((err) => {
                         console.error('Erro ao cadastrar cliente:', err);
-                        rl.close();
+                        voltarMenu();
                     });
             });
         });
-    });
+    }); 
 }
 
 
-function cadastrarProdutos() {
+async function cadastrarProdutos() {
+    await inicializaIdProdutos();
     rl.question('Digite o nome do produto: ', (nome) => {
         rl.question('Digite o valor do produto: ', (valor) => {
             const novoProduto: Produto = { id: i++, nome, valor: parseFloat(valor) };
             fs.appendFile(ARQ.produtos, `${novoProduto.id},${novoProduto.nome},${novoProduto.valor}\n`, 'utf8')
                 .then(() => {
                     console.log('Produto cadastrado com sucesso!');
-                    rl.close();
+                    voltarMenu();
                 })
                 .catch((err) => {
                     console.error('Erro ao cadastrar produto:', err);
-                    rl.close();
+                    voltarMenu();
                 });
         });
     });
@@ -115,7 +145,22 @@ function listarProdutos() {
             linhas.forEach((linha) => {
                 const [id, nome, valor] = linha.split(',');
                 console.log(`ID: ${id}, Nome: ${nome}, Valor: R$${valor}`);
-            });
+            }); mostrarMenu();
+        })
+        .catch((err) => {
+            console.error('Erro ao ler o arquivo:', err);
+        });
+}
+
+function listarClientes() {
+    fs.readFile(ARQ.clientes, 'utf-8')
+        .then((data) => {
+            const linhas = data.trim().split('\n').slice(1); // Ignora o cabeçalho
+            console.log('Clientes cadastrados:');
+            linhas.forEach((linha) => {
+                const [id, nome, telefone, endereco] = linha.split(',');
+                console.log(`ID: ${id}, Nome: ${nome}, Telefone: R$${telefone}, Endereço: ${endereco}`);
+            }); mostrarMenu();
         })
         .catch((err) => {
             console.error('Erro ao ler o arquivo:', err);
@@ -129,7 +174,7 @@ function mostrarMenu() {
   console.log("2 - Pedidos");
   console.log("3 - Sair");
     console.log("-------------------------------------\n");
-    rl.question("Escolha uma opção: ", (opcao) => {
+    rl.question("\nEscolha uma opção: ", (opcao) => {
         switch (opcao) {
             case "1":
                 mostrarMenuCad();
@@ -153,7 +198,8 @@ function mostrarMenuCad() {
     console.log("1 - Cadastrar Cliente");
     console.log("2 - Cadastrar Produto");
     console.log("3 - Listar Produtos");
-    console.log("4 - Voltar ao Menu Principal");
+    console.log("4 - Listar Clientes");
+    console.log("5 - Voltar ao Menu Principal");
     console.log("-------------------------------------\n");
     rl.question("Escolha uma opção: ", (opcao) => {
         switch (opcao) {
@@ -167,6 +213,9 @@ function mostrarMenuCad() {
                 listarProdutos();
                 break;
             case "4":
+                listarClientes();
+                break;
+            case "5":
                 mostrarMenu();
                 break;
             default:
@@ -176,19 +225,21 @@ function mostrarMenuCad() {
     });
 }
 
+
+
 function mostrarMenuPed() {
     console.log("\n-------- PIZZARIA GIACOMMINI --------");
     console.log("1 - Fazer Pedido");
     console.log("2 - Listar Pedidos");
     console.log("3 - Voltar ao Menu Principal");
     console.log("-------------------------------------\n");
-    rl.question("Escolha uma opção: ", (opcao) => {
+    rl.question("\nEscolha uma opção: ", (opcao) => {
         switch (opcao) {
             case "1":
-                fazerPedido();
+                //fazerPedido();
                 break;  
             case "2":
-                listarPedidos();
+               // listarPedidos();
                 break;
             case "3":
                 mostrarMenu();
@@ -200,3 +251,24 @@ function mostrarMenuPed() {
     });
 }
 mostrarMenu();
+
+function voltarMenu() {
+    console.log("\nEscolha uma opção: ");
+    console.log("1 - Cadastrar novamente");
+    console.log("2 - Voltar ao menu principal");
+    console.log("3 - Sair");
+    rl.question("Digite a opção desejada: ", (opcao) => {
+        switch (opcao) {
+            case "1":
+                cadastrarProdutos();
+                break;
+            case "2":
+                mostrarMenu();
+                break;
+            case "3":
+                console.log("Encerrando o Sistema.");
+                rl.close();
+                break;
+        }
+    });
+}

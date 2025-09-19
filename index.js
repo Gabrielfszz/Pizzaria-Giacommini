@@ -41,6 +41,56 @@ var fs_1 = require("fs");
 var readline = require("readline");
 var process_1 = require("process");
 var i = 1;
+function inicializaIdProdutos() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, linhas, ids, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, fs_1.promises.readFile(ARQ.produtos, 'utf-8')];
+                case 1:
+                    data = _b.sent();
+                    linhas = data.trim().split('\n').slice(1);
+                    ids = linhas.map(function (linha) { return parseInt(linha.split(',')[0]); }).filter(Number.isFinite);
+                    if (ids.length > 0) {
+                        i = Math.max.apply(Math, ids) + 1;
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    _a = _b.sent();
+                    i = 1;
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function inicializaIdClientes() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, linhas, ids, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, fs_1.promises.readFile(ARQ.clientes, 'utf-8')];
+                case 1:
+                    data = _b.sent();
+                    linhas = data.trim().split('\n').slice(1);
+                    ids = linhas.map(function (linha) { return parseInt(linha.split(',')[0]); }).filter(Number.isFinite);
+                    if (ids.length > 0) {
+                        i = Math.max.apply(Math, ids) + 1;
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    _a = _b.sent();
+                    i = 1;
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 var rl = readline.createInterface({ input: process_1.stdin, output: process_1.stdout });
 var ROOT = path.resolve('.');
 var DIR = {
@@ -107,36 +157,56 @@ function criaSeNaoExiste(caminho, conteudo) {
     });
 }
 function cadastrarCliente() {
-    rl.question('Digite o nome do cliente: ', function (nome) {
-        rl.question('Digite o telefone do cliente: ', function (telefone) {
-            rl.question('Digite o endereço do cliente: ', function (endereco) {
-                var novoCliente = { id: i++, nome: nome, telefone: telefone, endereco: endereco };
-                fs_1.promises.appendFile(ARQ.clientes, "".concat(novoCliente.id, ",").concat(novoCliente.nome, ",").concat(novoCliente.telefone, ",").concat(novoCliente.endereco, "\n"), 'utf8')
-                    .then(function () {
-                    console.log('Cliente cadastrado com sucesso!');
-                    rl.close();
-                })
-                    .catch(function (err) {
-                    console.error('Erro ao cadastrar cliente:', err);
-                    rl.close();
-                });
-            });
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, inicializaIdClientes()];
+                case 1:
+                    _a.sent();
+                    rl.question('Digite o nome do cliente: ', function (nome) {
+                        rl.question('Digite o telefone do cliente: ', function (telefone) {
+                            rl.question('Digite o endereço do cliente: ', function (endereco) {
+                                var novoCliente = { id: i++, nome: nome, telefone: telefone, endereco: endereco };
+                                fs_1.promises.appendFile(ARQ.clientes, "".concat(novoCliente.id, ",").concat(novoCliente.nome, ",").concat(novoCliente.telefone, ",").concat(novoCliente.endereco, "\n"), 'utf8')
+                                    .then(function () {
+                                    console.log('Cliente cadastrado com sucesso!');
+                                    voltarMenu();
+                                })
+                                    .catch(function (err) {
+                                    console.error('Erro ao cadastrar cliente:', err);
+                                    voltarMenu();
+                                });
+                            });
+                        });
+                    });
+                    return [2 /*return*/];
+            }
         });
     });
 }
 function cadastrarProdutos() {
-    rl.question('Digite o nome do produto: ', function (nome) {
-        rl.question('Digite o valor do produto: ', function (valor) {
-            var novoProduto = { id: i++, nome: nome, valor: parseFloat(valor) };
-            fs_1.promises.appendFile(ARQ.produtos, "".concat(novoProduto.id, ",").concat(novoProduto.nome, ",").concat(novoProduto.valor, "\n"), 'utf8')
-                .then(function () {
-                console.log('Produto cadastrado com sucesso!');
-                rl.close();
-            })
-                .catch(function (err) {
-                console.error('Erro ao cadastrar produto:', err);
-                rl.close();
-            });
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, inicializaIdProdutos()];
+                case 1:
+                    _a.sent();
+                    rl.question('Digite o nome do produto: ', function (nome) {
+                        rl.question('Digite o valor do produto: ', function (valor) {
+                            var novoProduto = { id: i++, nome: nome, valor: parseFloat(valor) };
+                            fs_1.promises.appendFile(ARQ.produtos, "".concat(novoProduto.id, ",").concat(novoProduto.nome, ",").concat(novoProduto.valor, "\n"), 'utf8')
+                                .then(function () {
+                                console.log('Produto cadastrado com sucesso!');
+                                voltarMenu();
+                            })
+                                .catch(function (err) {
+                                console.error('Erro ao cadastrar produto:', err);
+                                voltarMenu();
+                            });
+                        });
+                    });
+                    return [2 /*return*/];
+            }
         });
     });
 }
@@ -149,6 +219,7 @@ function listarProdutos() {
             var _a = linha.split(','), id = _a[0], nome = _a[1], valor = _a[2];
             console.log("ID: ".concat(id, ", Nome: ").concat(nome, ", Valor: R$").concat(valor));
         });
+        mostrarMenu();
     })
         .catch(function (err) {
         console.error('Erro ao ler o arquivo:', err);
@@ -161,7 +232,7 @@ function mostrarMenu() {
     console.log("2 - Pedidos");
     console.log("3 - Sair");
     console.log("-------------------------------------\n");
-    rl.question("Escolha uma opção: ", function (opcao) {
+    rl.question("\nEscolha uma opção: ", function (opcao) {
         switch (opcao) {
             case "1":
                 mostrarMenuCad();
@@ -212,13 +283,13 @@ function mostrarMenuPed() {
     console.log("2 - Listar Pedidos");
     console.log("3 - Voltar ao Menu Principal");
     console.log("-------------------------------------\n");
-    rl.question("Escolha uma opção: ", function (opcao) {
+    rl.question("\nEscolha uma opção: ", function (opcao) {
         switch (opcao) {
             case "1":
-                fazerPedido();
+                //fazerPedido();
                 break;
             case "2":
-                listarPedidos();
+                // listarPedidos();
                 break;
             case "3":
                 mostrarMenu();
@@ -230,3 +301,23 @@ function mostrarMenuPed() {
     });
 }
 mostrarMenu();
+function voltarMenu() {
+    console.log("\nEscolha uma opção: ");
+    console.log("1 - Cadastrar novamente");
+    console.log("2 - Voltar ao menu principal");
+    console.log("3 - Sair");
+    rl.question("Digite a opção desejada: ", function (opcao) {
+        switch (opcao) {
+            case "1":
+                cadastrarProdutos();
+                break;
+            case "2":
+                mostrarMenu();
+                break;
+            case "3":
+                console.log("Encerrando o Sistema.");
+                rl.close();
+                break;
+        }
+    });
+}
