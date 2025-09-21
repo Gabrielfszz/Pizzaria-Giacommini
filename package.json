@@ -4,7 +4,9 @@
   "description": "Sistema da Pizzaria Giacommini",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node js/index.js",
+    "dev": "ts-node ts/index.ts"
   },
   "author": "Gabriel, Italo, Matheus, Joaquim, Pedro",
   "license": "ISC",
