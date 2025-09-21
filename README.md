@@ -6,7 +6,7 @@ Gabriel Filipe dos Santos RA: 2517645
 Italo Guilherme Pinheiro Rodrigues RA: 2526314  
 Pedro Henrique Assis de Oliveira RA: 2508585  
 Matheus Gomes Nagy RA: 2508094   
-Joaquim  
+Joaquim da Silva dos Santos RA:2502410
 
 ## ✨ Recursos
 
@@ -36,6 +36,7 @@ Pizzaria Giacommini/
 ├─ package.json      
 ├─ package-lock.json  
 ├─ pizza.ico          # ícone de pizza (para o atalho criado após executar o .bat)
+├─ README.md          # arquivo README
 ├─ setup-pizzaria.bat # arquivo .bat para configuração automática do sistema
 └─ tsconfig.json      
 ```
