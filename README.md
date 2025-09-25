@@ -1,7 +1,9 @@
 # Sistema de Pizzaria (TypeScript + Node.js)
 
-App para gerenciar uma Pizzaria, contendo **Cadastros de Clientes/Produtos**, **Emissão de Recibos** e **Relatórios de Vendas**.  
-Desenvolvido pelo grupo:  
+App para gerenciar uma Pizzaria, contendo **Cadastros de Clientes/Produtos**, **Emissão de Recibos**, **Relatórios de Vendas** e **Conteúdos Extras**.  
+
+**Desenvolvido para a matéria de Typescript, pelos alunos:**  
+
 Gabriel Filipe dos Santos RA: 2517645  
 Italo Guilherme Pinheiro Rodrigues RA: 2526314  
 Pedro Henrique Assis de Oliveira RA: 2508585  
@@ -51,14 +53,31 @@ Pizzaria Giacommini/
 
 ## 🔧 Pré-requisitos
 
-* **Node.js 16+** (recomendado 18 ou 20)
-* **npm**
-
+* **Node.js v22.18.0** 
+* **npm v10.9.3**
+* **git v2.51.0**
+* **Typescript v5.9.2**  
 ---
 
 ## 🚀 Instalação
 
-**Temos duas opções para instalação do sistema:**
+**Antes de tudo, é necessário baixar e instalar o node.js e o git e o Typescript**  
+Baixe e instale o node.js no site abaixo:
+```bash
+https://nodejs.org/en/download
+```  
+Baixe e instale o git no site abaixo:
+```bash
+https://git-scm.com/downloads
+```
+Após a instalação dos programas acima, abra o git e digite o seguinte código:
+```bash
+npm i -g typescript
+```
+Esse código instala a linguagem Typescript, necessária para o funcionamento do sistema.  
+  
+  
+**Após os passos acima, temos duas opções para instalação do sistema:**
 
 **Opção 1 - Baixe e execute o arquivo .bat**    
 Automaticamente ele clonará o repositório para uma nova pasta chamada "Pizzaria-Giacommini", criará um atalho com o ícone da Pizzaria e executará o programa.
@@ -90,7 +109,7 @@ npm i -D typescript ts-node @types/node && npm i -D @types/readline-sync
 
 ## ▶️ Como executar  
 
-1 - **Modo desenvolvimento (executa direto o TypeScript):**
+1 - **Modo desenvolvimento (executa direto o arquivo .ts):**
 
 ```bash
 npm run dev
@@ -137,6 +156,15 @@ rm -f csv/*.csv
 ```
 
 *(No Windows, apague manualmente ou use `del` no PowerShell.)*
+
+---
+
+## 🖼️ Modelos XDRAW 
+<img width="1099" height="570" alt="Pizzaria Giacommini Menu Principal" src="https://github.com/user-attachments/assets/53bb9064-8259-4b6a-adda-2f657557b27a" />  
+
+<img width="996" height="1024" alt="Pizzaria-Giacommini" src="https://github.com/user-attachments/assets/f2562635-e04e-4540-8b1f-156fb171f0f0" />
+
+
 
 ---
 
