@@ -481,8 +481,8 @@ function excluirProduto() {
             const linhas = data.trim().split('\n').slice(1).filter(linha => linha.trim() !== '');
             console.log('Produtos disponíveis:');
             linhas.forEach((linha) => {
-                const [id, nome, valor] = linha.split(',');
-                console.log(`ID: ${id}, Nome: ${nome}, Valor: R$${valor}`);
+                const [id, tipo, nome, valor] = linha.split(',');
+                console.log(`ID: ${id}, Tipo: ${tipo}, Nome: ${nome}, Valor: R$${valor}`);
             });
             rl.question('Digite o ID do produto que deseja excluir: ', (id) => {
                 const produto = linhas.find(linha => linha.startsWith(id + ','));
@@ -1151,4 +1151,5 @@ function vendasPorFormaPagamento() {
 }
 
 // INICIALIZA O SISTEMA
+
 mostrarMenu();
